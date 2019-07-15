@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    labelCount = new QLabel(this);
+    ui->statusBar->addPermanentWidget(labelCount);
+
     resultsModel = qobject_cast<ResultsModel*>(ui->results->model());
     Q_CHECK_PTR(resultsModel);
 
@@ -32,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
             resultsModel->search(FilterConverter::convert(ui->term->text()), ui->path->text());
         else
             resultsModel->stopSearching();
+    });
+
+    connect(resultsModel, &ResultsModel::layoutChanged, [this]() {
+        labelCount->setText(QStringLiteral("%1 results").arg(resultsModel->rowCount()));
     });
 
     connect(resultsModel, &ResultsModel::directoryDoesntExist, this, [this]() {

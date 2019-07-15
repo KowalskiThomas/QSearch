@@ -45,6 +45,8 @@ public:
     bool searching();
     Searcher* searcher();
 
+    QString getDisplayableData(const QModelIndex& index) const;
+
 private:
 signals:
     void directoryDoesntExist();

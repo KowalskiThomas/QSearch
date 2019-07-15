@@ -12,6 +12,7 @@
 
 #include <QList>
 #include <QFileInfo>
+#include <QLabel>
 
 class ResultsModel;
 
@@ -27,6 +28,8 @@ class MainWindow : public QMainWindow
     int totalResults;
 
     ResultsModel* resultsModel;
+
+    QLabel* labelCount;
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);

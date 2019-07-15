@@ -87,15 +87,33 @@ QVariant ResultsModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     if (role == Qt::DisplayRole)
-    {
-        switch(static_cast<Column>(index.column()))
-        {
-            case Path:
-                return results_[index.row()].absoluteFilePath();
-            case Size:
-                return results_[index.row()].size();
-        }
-    }
+        return getDisplayableData(index);
 
     return QVariant();
+}
+
+QString readableSize(qint64 s)
+{
+    if (s > 1E9)
+        return QStringLiteral("%1 GB").arg(static_cast<double>(s) / 1E9, 0, 'f', 2);
+    if (s > 1E6)
+        return QStringLiteral("%1 MB").arg(static_cast<double>(s) / 1E6, 0, 'f', 2);
+    if (s > 1E3)
+        return QStringLiteral("%1 KB").arg(static_cast<double>(s) / 1E3, 0, 'f', 2);
+
+    return QStringLiteral("%1 bytes").arg(s);
+}
+
+QString ResultsModel::getDisplayableData(const QModelIndex& index) const
+{
+    auto info = results_[index.row()];
+    switch(static_cast<Column>(index.column()))
+    {
+        case Path:
+            return info.absoluteFilePath();
+        case Size:
+            return readableSize(info.size());
+    }
+
+    return "";
 }
