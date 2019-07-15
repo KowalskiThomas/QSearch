@@ -1,11 +1,34 @@
 #include "filesearcher.h"
 
+#include "configuration.h"
+
 #include <chrono>
 
 #include <QFileInfo>
 
 int Searcher::count = 0;
 QQueue<QString> Searcher::paths;
+
+Searcher::Searcher(QRegularExpression match, QString path)
+    : QObject(), match(match), path(path)
+{
+    count++;
+}
+
+Searcher::Searcher(QString match, QString path)
+    : QObject(), path(path)
+{
+    count++;
+
+    auto rx = QStringLiteral("^%1$").arg(match);
+
+    constexpr auto options =
+            QRegularExpression::PatternOption::DontCaptureOption |
+            (Configuration::caseInsensitive ? QRegularExpression::CaseInsensitiveOption : QRegularExpression::NoPatternOption);
+    QRegularExpression regex(rx, options);
+
+    this->match = regex;
+}
 
 SearchResult Searcher::manage()
 {
@@ -14,6 +37,12 @@ SearchResult Searcher::manage()
     {
         emit finished(SearchResult::DirectoryDoesntExist);
         return SearchResult::DirectoryDoesntExist;
+    }
+    if (!match.isValid())
+    {
+        qCritical() << "Invalid regex" << match;
+        emit finished(SearchResult::InvalidTerm);
+        return SearchResult::InvalidTerm;
     }
 
     paths.push_back(path);

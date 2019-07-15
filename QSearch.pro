@@ -45,6 +45,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        configuration.cpp \
         filesearcher.cpp \
         filterconverter.cpp \
         main.cpp \
@@ -54,6 +55,7 @@ SOURCES += \
         task.cpp
 
 HEADERS += \
+        configuration.h \
         filesearcher.h \
         filterconverter.h \
         mainwindow.h \

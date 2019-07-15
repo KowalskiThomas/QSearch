@@ -58,27 +58,8 @@ public:
             cb(results);
     }
 
-    Searcher(QRegularExpression match, QString path = "C:/")
-        : QObject(), match(match), path(path)
-    {
-        count++;
-    }
-
-    Searcher(QString match, QString path = "C:/")
-        : QObject(), path(path)
-    {
-        count++;
-
-        auto rx = QStringLiteral("^%1$").arg(match);
-        QRegularExpression regex(rx, QRegularExpression::PatternOption::DontCaptureOption);
-        if (!regex.isValid())
-        {
-            qCritical() << "Invalid regex" << regex;
-            return;
-        }
-        this->match = regex;
-    }
-
+    Searcher(QRegularExpression match, QString path = "C:/");
+    Searcher(QString match, QString path = "C:/");
     virtual ~Searcher() override;
 
     SearchResult manage();
