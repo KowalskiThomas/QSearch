@@ -40,6 +40,8 @@ class Searcher : public QObject
     size_t dirCount = 0;
     size_t fileCount = 0;
 
+    bool cancelled;
+
     static QQueue<QString> paths;
 
     std::vector<NewResultsCallback> callbacks;
@@ -64,6 +66,11 @@ public:
 
     SearchResult manage();
     QList<QFileInfo> search();
+
+    void cancel()
+    {
+        cancelled = true;
+    }
 
 signals:
     void newResults(QList<QFileInfo>);

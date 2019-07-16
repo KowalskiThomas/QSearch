@@ -46,24 +46,29 @@ CONFIG += c++11
 
 SOURCES += \
         configuration.cpp \
+        fileinfowidget.cpp \
         filesearcher.cpp \
         filterconverter.cpp \
         main.cpp \
         mainwindow.cpp \
         resultsmodel.cpp \
         resultstableview.cpp \
-        task.cpp
+        task.cpp \
+        utils.cpp
 
 HEADERS += \
         configuration.h \
+        fileinfowidget.h \
         filesearcher.h \
         filterconverter.h \
         mainwindow.h \
         resultsmodel.h \
         resultstableview.h \
-        task.h
+        task.h \
+        utils.h
 
 FORMS += \
+        fileinfowidget.ui \
         mainwindow.ui
 
 # Default rules for deployment.

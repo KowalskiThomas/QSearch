@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>541</width>
-    <height>300</height>
+    <width>889</width>
+    <height>612</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,6 +43,16 @@
     <item row="1" column="0">
      <widget class="ResultsTableView" name="results"/>
     </item>
+    <item row="0" column="1" rowspan="2">
+     <widget class="FileInfoWidget" name="widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -50,7 +60,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>541</width>
+     <width>889</width>
      <height>21</height>
     </rect>
    </property>
@@ -71,6 +81,12 @@
    <class>ResultsTableView</class>
    <extends>QTableView</extends>
    <header>resultstableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>FileInfoWidget</class>
+   <extends>QWidget</extends>
+   <header>fileinfowidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

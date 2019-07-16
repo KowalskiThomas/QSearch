@@ -1,4 +1,5 @@
 #include "resultsmodel.h"
+#include "utils.h"
 
 QMap<ResultsModel::Column, QString> ResultsModel::columns = {
     { ResultsModel::Column::Path, "Path" },
@@ -20,6 +21,9 @@ void ResultsModel::onResults(QList<QFileInfo> results)
 
 void ResultsModel::search(QString match, QString path)
 {
+    results_.clear();
+    emit layoutChanged();
+
     searcher_ = new Searcher(match, path);
     connect(searcher_, &Searcher::newResults, this, &ResultsModel::onResults);
     connect(searcher_, &Searcher::finished, [this](SearchResult res) {
@@ -50,8 +54,9 @@ Searcher* ResultsModel::searcher()
 
 void ResultsModel::stopSearching()
 {
-    delete searcher_;
-    searcher_ = nullptr;
+    searcher_->cancel();
+//    delete searcher_;
+//    searcher_ = nullptr;
 }
 
 QVariant ResultsModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -89,19 +94,10 @@ QVariant ResultsModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole)
         return getDisplayableData(index);
 
+    if (role == Qt::UserRole)
+        return QVariant::fromValue(results_[index.row()]);
+
     return QVariant();
-}
-
-QString readableSize(qint64 s)
-{
-    if (s > 1E9)
-        return QStringLiteral("%1 GB").arg(static_cast<double>(s) / 1E9, 0, 'f', 2);
-    if (s > 1E6)
-        return QStringLiteral("%1 MB").arg(static_cast<double>(s) / 1E6, 0, 'f', 2);
-    if (s > 1E3)
-        return QStringLiteral("%1 KB").arg(static_cast<double>(s) / 1E3, 0, 'f', 2);
-
-    return QStringLiteral("%1 bytes").arg(s);
 }
 
 QString ResultsModel::getDisplayableData(const QModelIndex& index) const
@@ -112,7 +108,7 @@ QString ResultsModel::getDisplayableData(const QModelIndex& index) const
         case Path:
             return info.absoluteFilePath();
         case Size:
-            return readableSize(info.size());
+            return Utils::readableSize(info.size());
     }
 
     return "";

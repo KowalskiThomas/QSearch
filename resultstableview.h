@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTableView>
+#include <QFileInfo>
 
 class ResultsModel;
 
@@ -16,6 +17,7 @@ public:
     explicit ResultsTableView(QWidget *parent = nullptr);
 
 signals:
+    void fileSelected(QFileInfo);
 
 public slots:
 };
