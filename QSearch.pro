@@ -18,12 +18,6 @@ CONFIG(release, debug|release) {
     CONFIG += release
 }
 
-release {
-    message("Release NO OUTPUT")
-    DEFINES += QT_NO_DEBUG_OUTPUT=1 QT_NO_WARNING_OUTPUT=1
-}
-
-
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -70,3 +64,31 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+debug {
+    message("Building for debug")
+    QMAKE_CXXFLAGS -= -O
+    QMAKE_CXXFLAGS -= -O1
+    QMAKE_CXXFLAGS -= -O3
+    QMAKE_CXXFLAGS -= -O2
+    QMAKE_CXXFLAGS *= -O0
+}
+
+release | profile {
+    QMAKE_CXXFLAGS -= -O
+    QMAKE_CXXFLAGS -= -O1
+    QMAKE_CXXFLAGS -= -O2
+    QMAKE_CXXFLAGS *= -O3
+}
+
+profile {
+    message("Building for profiling")
+}
+
+release {
+    message("Building for release")
+    DEFINES += QT_NO_DEBUG_OUTPUT=1
+    DEFINES += QT_NO_WARNING_OUTPUT=1
+    DEFINES += QT_NO_INFO_OUTPUT=1
+}
+
