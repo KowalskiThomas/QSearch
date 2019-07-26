@@ -44,6 +44,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(resultsModel, &ResultsModel::directoryDoesntExist, this, [this]() {
         QMessageBox::warning(this, "Error", "Couldn't find directory.");
     }, Qt::ConnectionType::QueuedConnection);
+
+    connect(this, &QMainWindow::destroyed, [this] {
+        if (resultsModel->searching())
+            resultsModel->stopSearching();
+    });
+
+    connect(ui->results, &ResultsTableView::fileSelected, [this](QFileInfo info) {
+        ui->widget->setFileInfo(info);
+    });
 }
 
 MainWindow::~MainWindow()

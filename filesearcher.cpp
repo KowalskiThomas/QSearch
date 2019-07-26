@@ -48,7 +48,7 @@ SearchResult Searcher::manage()
     paths.push_back(path);
     results = search();
 
-    while (!paths.isEmpty())
+    while (!paths.isEmpty() && !cancelled)
     {
         if(count < MAX_SEARCHERS)
         {
